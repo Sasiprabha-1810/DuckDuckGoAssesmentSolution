@@ -2,6 +2,7 @@
 **You have a requirement which states
         "The system should scale to 2000 users".**
 1.) What other questions would you need to ask in order to get enough information to create a workload model.
+
 Answer : 
 1.User Distribution and Behaviour:
 	1.what are the peak and average concurrent user counts ?
@@ -21,8 +22,10 @@ Answer :
 	1.What are the components in scope? frontend, api,database ?
 6.Test Environment:
 	1.Is the test environment production clone ?
+ 
  **Can you re-write the requirement so that it is more descriptive and testable. (You can use
 made up values?**
+
 Answer: 
 	The application shall support 2000 concurrent users during peak usage period,executing following transactions
 with 40% search operation,30% homepage loads, 20% suggestions dropdowns and 10% settings navigation.
@@ -31,7 +34,9 @@ with 40% search operation,30% homepage loads, 20% suggestions dropdowns and 10% 
 Each user performs one action every 7 seconds(approx 3 minute session with 5 seconds think time between actions)
 The result in a total of approximately 286 transactions per second(TPS)during the test and 
 total transactions is approximately 85800
+
 **Question 2: Example of Involvement in the Resolution of a Performance / Scalability Defect**
+
 a. How was the defect found?
 The defect was discovered during a performance test of an ERP system's "Generate Invoice Summary" transaction. 
 This feature is used by finance teams to generate consolidated invoice data across multiple business units. Under a load of 200 virtual users, the average response time exceeded 25 seconds, while the SLA was set at 5 seconds. Additionally, some transactions were failing due to backend timeouts.
@@ -44,13 +49,9 @@ The ERP middleware logs showed that memory utilization peaked during this transa
 
 c. How was it resolved?
 I collaborated with the development and database teams to address the issue:
-
 The stored procedure was optimized by rewriting inefficient joins and applying appropriate indexing on invoice_header and transaction_detail tables.
-
 The business logic in the application layer was restructured to push more computation into the optimized stored procedure, reducing post-processing time.
-
 We implemented result set pagination, ensuring only relevant data (e.g., monthly batch) was fetched based on input parameters.
-
 I also advised the infrastructure team to tune JVM memory settings and increase the thread pool size to improve concurrency handling.
 
 d. How was the resolution proven?
@@ -58,7 +59,9 @@ After implementing the fixes, I executed the same LoadRunner scenario. The respo
 
 We followed up with endurance (soak) testing for 4 hours, and the application showed consistent performance without memory leaks 
 or GC overhead. The results were shared with stakeholders, and the changes were approved for deployment.
+
 **As well as creating a script in a tool to do the performance testing, what other factors would need to be considered for a performance testing engagement?**
+
 1. Understanding Business Requirements and SLAs
 Identify business-critical workflows and their expected response times, concurrency levels, and throughput.
 
